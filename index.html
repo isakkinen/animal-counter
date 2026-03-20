@@ -5,6 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Global Animal Slaughter Counter</title>
   <style>
+    :root {
+      --primary-bg: rgba(255, 255, 255, 0.05);
+      --light-bg: rgba(255, 255, 255, 0.08);
+      --lighter-bg: rgba(255, 255, 255, 0.12);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --text-muted: rgba(255, 255, 255, 0.6);
+      --text-light: rgba(255, 255, 255, 0.8);
+      --text-lighter: rgba(255, 255, 255, 0.7);
+      --accent-gold: #ffd166;
+      --accent-blue: #a8daff;
+      --card-radius: 16px;
+      --container-radius: 24px;
+      --text-shadow: 0 2px 8px;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -26,12 +41,12 @@
     .container {
       max-width: 1200px;
       width: 100%;
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--primary-bg);
       backdrop-filter: blur(10px);
-      border-radius: 24px;
+      border-radius: var(--container-radius);
       padding: 40px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-color);
     }
 
     h2 {
@@ -43,7 +58,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-shadow: var(--text-shadow) rgba(0, 0, 0, 0.1);
     }
 
     .animal-kill-counter {
@@ -55,14 +70,14 @@
     }
 
     .animal-kill-counter li {
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--light-bg);
       padding: 24px;
-      border-radius: 16px;
+      border-radius: var(--card-radius);
       display: flex;
       flex-direction: column;
       gap: 12px;
       transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-color);
       position: relative;
       overflow: hidden;
     }
@@ -80,7 +95,7 @@
     }
 
     .animal-kill-counter li:hover {
-      background: rgba(255, 255, 255, 0.12);
+      background: var(--lighter-bg);
       transform: translateY(-4px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
@@ -92,16 +107,16 @@
     .animal-kill-counter span {
       font-size: 2rem;
       font-weight: 700;
-      color: #ffd166;
+      color: var(--accent-gold);
       font-variant-numeric: tabular-nums;
       letter-spacing: -0.5px;
-      text-shadow: 0 2px 8px rgba(255, 209, 102, 0.3);
+      text-shadow: var(--text-shadow) rgba(255, 209, 102, 0.3);
       animation: fadeIn 0.5s ease-in;
     }
 
     .animal-name {
       font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--text-light);
       text-transform: capitalize;
       font-weight: 500;
       letter-spacing: 0.5px;
@@ -128,11 +143,11 @@
     }
 
     .sources {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--primary-bg);
       padding: 30px;
-      border-radius: 16px;
+      border-radius: var(--card-radius);
       margin-top: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-color);
     }
 
     .sources h3 {
@@ -156,19 +171,19 @@
       content: '→';
       position: absolute;
       left: 0;
-      color: #ffd166;
+      color: var(--accent-gold);
       font-weight: bold;
     }
 
     .sources a {
-      color: #a8daff;
+      color: var(--accent-blue);
       text-decoration: none;
       transition: color 0.2s ease;
       line-height: 1.6;
     }
 
     .sources a:hover {
-      color: #ffd166;
+      color: var(--accent-gold);
       text-decoration: underline;
     }
 
@@ -176,7 +191,7 @@
       text-align: center;
       margin-top: 30px;
       font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--text-muted);
       font-style: italic;
     }
 
@@ -207,14 +222,14 @@
       text-align: center;
       margin-bottom: 30px;
       padding: 16px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--light-bg);
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-color);
     }
 
     .timer-label {
       font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--text-lighter);
       margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -224,11 +239,11 @@
     #page-timer {
       font-size: 2rem;
       font-weight: 700;
-      color: #a8daff;
+      color: var(--accent-blue);
       font-family: 'Courier New', monospace;
       font-variant-numeric: tabular-nums;
       letter-spacing: 1px;
-      text-shadow: 0 2px 8px rgba(168, 218, 255, 0.3);
+      text-shadow: var(--text-shadow) rgba(168, 218, 255, 0.3);
     }
 
     .animal-icon {
@@ -329,6 +344,11 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', function() {
+      // Utility function to format time values with zero padding
+      function padZero(num) {
+        return String(num).padStart(2, '0');
+      }
+
       // Timer functionality
       var pageOpenTime = new Date();
       function updateTimer() {
@@ -338,10 +358,7 @@
         var minutes = Math.floor((elapsed % 3600) / 60);
         var seconds = elapsed % 60;
         
-        var timerDisplay = String(hours).padStart(2, '0') + ':' + 
-                          String(minutes).padStart(2, '0') + ':' + 
-                          String(seconds).padStart(2, '0');
-        
+        var timerDisplay = padZero(hours) + ':' + padZero(minutes) + ':' + padZero(seconds);
         var timerElement = document.getElementById('page-timer');
         if (timerElement) {
           timerElement.textContent = timerDisplay;
@@ -376,13 +393,16 @@
       var secondsPerYear = 365 * 24 * 60 * 60;
       var interval = 1000 / updatesPerSecond;
       var count = 0, start = new Date().getTime();
+      var killsPerUpdateCycle = 1 / updatesPerSecond;
 
       function update(intervalCount) {
+        var currentKillRate = intervalCount * killsPerUpdateCycle;
         for (var subset in animalsKilledPerYear) {
-          var numKilled = animalsKilledPerYear[subset];
           var countElement = document.getElementById("akc-" + subset);
           if (countElement) {
-            countElement.innerHTML = Math.round(intervalCount * (numKilled / secondsPerYear) / updatesPerSecond).toLocaleString();
+            var numKilled = animalsKilledPerYear[subset];
+            var currentCount = Math.round(currentKillRate * (numKilled / secondsPerYear));
+            countElement.innerHTML = currentCount.toLocaleString();
           }
         }
       }
