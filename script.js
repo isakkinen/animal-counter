@@ -1,22 +1,48 @@
 window.addEventListener('DOMContentLoaded', function() {
   // Translation data object - will be populated from JSON files
   var translations = {};
+  var loadingLanguages = {};
 
   // Get current language from localStorage or default to English
   var currentLanguage = localStorage.getItem('animalCounterLanguage') || 'en';
 
-  // Load translations from JSON files
-  Promise.all([
-    fetch('translations/en.json').then(response => response.json()),
-    fetch('translations/fi.json').then(response => response.json())
-  ]).then(function(results) {
-    translations.en = results[0];
-    translations.fi = results[1];
+  // Function to load a language translation file
+  function loadLanguage(lang) {
+    // If already loaded, return resolved promise
+    if (translations[lang]) {
+      return Promise.resolve(translations[lang]);
+    }
     
-    // Initialize the page with loaded translations
+    // If already loading, return the loading promise
+    if (loadingLanguages[lang]) {
+      return loadingLanguages[lang];
+    }
+    
+    // Start loading the language file
+    loadingLanguages[lang] = fetch('translations/' + lang + '.json')
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Failed to load translation file for ' + lang);
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        translations[lang] = data;
+        delete loadingLanguages[lang];
+        return data;
+      })
+      .catch(function(error) {
+        console.error('Error loading translations for ' + lang + ':', error);
+        delete loadingLanguages[lang];
+        throw error;
+      });
+    
+    return loadingLanguages[lang];
+  }
+
+  // Load the current language on page load
+  loadLanguage(currentLanguage).then(function() {
     updateLanguage();
-  }).catch(function(error) {
-    console.error('Error loading translations:', error);
   });
 
   // Function to get translated text
@@ -50,8 +76,15 @@ window.addEventListener('DOMContentLoaded', function() {
   var langToggle = document.getElementById('lang-toggle');
   if (langToggle) {
     langToggle.addEventListener('click', function() {
-      currentLanguage = currentLanguage === 'en' ? 'fi' : 'en';
-      updateLanguage();
+      var nextLanguage = currentLanguage === 'en' ? 'fi' : 'en';
+      
+      // Load the new language before switching
+      loadLanguage(nextLanguage).then(function() {
+        currentLanguage = nextLanguage;
+        updateLanguage();
+      }).catch(function(error) {
+        console.error('Failed to switch language:', error);
+      });
     });
   }
 
