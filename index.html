@@ -202,10 +202,42 @@
     .counting {
       animation: pulse 0.5s ease-in-out;
     }
+
+    .timer-container {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .timer-label {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    #page-timer {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #a8daff;
+      font-family: 'Courier New', monospace;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px rgba(168, 218, 255, 0.3);
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="timer-container">
+      <div class="timer-label">Page Open Time</div>
+      <div id="page-timer">00:00:00</div>
+    </div>
     <h2>Animals killed for food since opening this page</h2>
     <ul class="animal-kill-counter">
       <li>
@@ -291,6 +323,29 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', function() {
+      // Timer functionality
+      var pageOpenTime = new Date();
+      function updateTimer() {
+        var now = new Date();
+        var elapsed = Math.floor((now - pageOpenTime) / 1000);
+        var hours = Math.floor(elapsed / 3600);
+        var minutes = Math.floor((elapsed % 3600) / 60);
+        var seconds = elapsed % 60;
+        
+        var timerDisplay = String(hours).padStart(2, '0') + ':' + 
+                          String(minutes).padStart(2, '0') + ':' + 
+                          String(seconds).padStart(2, '0');
+        
+        var timerElement = document.getElementById('page-timer');
+        if (timerElement) {
+          timerElement.textContent = timerDisplay;
+        }
+      }
+      
+      updateTimer();
+      setInterval(updateTimer, 1000);
+
+      // Animal counter functionality
       var updatesPerSecond = 20;
       var animalsKilledPerYear = {
         "wild_caught_fish": 970000000000,
