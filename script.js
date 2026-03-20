@@ -1,4 +1,94 @@
 window.addEventListener('DOMContentLoaded', function() {
+  // Translation data
+  var translations = {
+    en: {
+      pageOpenTime: "Page Open Time",
+      mainTitle: "Animals killed for food since opening this page",
+      sourcesTitle: "Sources",
+      disclaimer: "Data based on 2013 statistics. Actual numbers may vary.",
+      animals: {
+        wild_caught_fish: "🐟 wild caught fish",
+        chickens: "🐔 chickens",
+        farmed_fish: "🐠 farmed fish",
+        ducks: "🦆 ducks",
+        pigs: "🐷 pigs",
+        rabbits: "🐰 rabbits",
+        geese: "🦢 geese",
+        turkeys: "🦃 turkeys",
+        sheep: "🐑 sheep",
+        goats: "🐐 goats",
+        cattle: "🐄 cattle",
+        rodents: "🐭 rodents",
+        other_birds: "🕊️ pigeons and other birds",
+        buffalo: "🐃 buffalo",
+        horses: "🐴 horses",
+        donkeys: "🫏 donkeys and mules",
+        camels: "🐪 camels and other camelids"
+      }
+    },
+    fi: {
+      pageOpenTime: "Sivun avoinna olo aika",
+      mainTitle: "Eläimet, jotka on tapettu ruoaksi sivun avaamisen jälkeen",
+      sourcesTitle: "Lähteet",
+      disclaimer: "Tiedot perustuvat vuoden 2013 tilastoihin. Todelliset luvut voivat poiketa.",
+      animals: {
+        wild_caught_fish: "🐟 villiä kalaa",
+        chickens: "🐔 kanaa",
+        farmed_fish: "🐠 kasvatettua kalaa",
+        ducks: "🦆 sorsaa",
+        pigs: "🐷 sikaa",
+        rabbits: "🐰 kania",
+        geese: "🦢 hanhea",
+        turkeys: "🦃 kalkkunaa",
+        sheep: "🐑 lammasta",
+        goats: "🐐 vuohea",
+        cattle: "🐄 nautaa",
+        rodents: "🐭 jyrsijää",
+        other_birds: "🕊️ kyyhkystä ja muita lintuja",
+        buffalo: "🐃 buffaloa",
+        horses: "🐴 hevosta",
+        donkeys: "🫏 aasia ja muulia",
+        camels: "🐪 kamelia"
+      }
+    }
+  };
+
+  // Get current language from localStorage or default to English
+  var currentLanguage = localStorage.getItem('animalCounterLanguage') || 'en';
+
+  // Function to get translated text
+  function t(key) {
+    var keys = key.split('.');
+    var value = translations[currentLanguage];
+    for (var i = 0; i < keys.length; i++) {
+      value = value[keys[i]];
+      if (value === undefined) {
+        return translations['en'][key] || key;
+      }
+    }
+    return value;
+  }
+
+  // Function to update all UI text with current language
+  function updateLanguage() {
+    document.documentElement.lang = currentLanguage;
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      el.textContent = t(key);
+    });
+    localStorage.setItem('animalCounterLanguage', currentLanguage);
+    updateAnimalLabels();
+  }
+
+  // Language toggle button
+  var langToggle = document.getElementById('lang-toggle');
+  if (langToggle) {
+    langToggle.addEventListener('click', function() {
+      currentLanguage = currentLanguage === 'en' ? 'fi' : 'en';
+      updateLanguage();
+    });
+  }
+
   // Utility function to format time values with zero padding
   function padZero(num) {
     return String(num).padStart(2, '0');
@@ -6,23 +96,23 @@ window.addEventListener('DOMContentLoaded', function() {
 
   // Animal counter data with display labels
   var animalsData = [
-    { key: "wild_caught_fish", label: "🐟 wild caught fish", killed: 970000000000 },
-    { key: "chickens", label: "🐔 chickens", killed: 61171973510 },
-    { key: "farmed_fish", label: "🐠 farmed fish", killed: 38000000000 },
-    { key: "ducks", label: "🦆 ducks", killed: 2887594480 },
-    { key: "pigs", label: "🐷 pigs", killed: 1451856889.38 },
-    { key: "rabbits", label: "🐰 rabbits", killed: 1171578000 },
-    { key: "geese", label: "🦢 geese", killed: 687147000 },
-    { key: "turkeys", label: "🦃 turkeys", killed: 618086890 },
-    { key: "sheep", label: "🐑 sheep", killed: 536742256.33 },
-    { key: "goats", label: "🐐 goats", killed: 438320370.99 },
-    { key: "cattle", label: "🐄 cattle", killed: 298799160.08 },
-    { key: "rodents", label: "🐭 rodents", killed: 70371000 },
-    { key: "other_birds", label: "🕊️ pigeons and other birds", killed: 59656000 },
-    { key: "buffalo", label: "🐃 buffalo", killed: 25798819 },
-    { key: "horses", label: "🐴 horses", killed: 4863367 },
-    { key: "donkeys", label: "🫏 donkeys and mules", killed: 3213400 },
-    { key: "camels", label: "🐪 camels and other camelids", killed: 3243266.03 }
+    { key: "wild_caught_fish", killed: 970000000000 },
+    { key: "chickens", killed: 61171973510 },
+    { key: "farmed_fish", killed: 38000000000 },
+    { key: "ducks", killed: 2887594480 },
+    { key: "pigs", killed: 1451856889.38 },
+    { key: "rabbits", killed: 1171578000 },
+    { key: "geese", killed: 687147000 },
+    { key: "turkeys", killed: 618086890 },
+    { key: "sheep", killed: 536742256.33 },
+    { key: "goats", killed: 438320370.99 },
+    { key: "cattle", killed: 298799160.08 },
+    { key: "rodents", killed: 70371000 },
+    { key: "other_birds", killed: 59656000 },
+    { key: "buffalo", killed: 25798819 },
+    { key: "horses", killed: 4863367 },
+    { key: "donkeys", killed: 3213400 },
+    { key: "camels", killed: 3243266.03 }
   ];
 
   // Component: Animal counter item
@@ -35,11 +125,20 @@ window.addEventListener('DOMContentLoaded', function() {
     
     var nameSpan = document.createElement('span');
     nameSpan.className = 'animal-name';
-    nameSpan.textContent = animal.label;
+    nameSpan.setAttribute('data-animal-key', animal.key);
+    nameSpan.textContent = t('animals.' + animal.key);
     
     li.appendChild(countSpan);
     li.appendChild(nameSpan);
     return li;
+  }
+
+  // Function to update animal labels
+  function updateAnimalLabels() {
+    document.querySelectorAll('[data-animal-key]').forEach(function(el) {
+      var key = el.getAttribute('data-animal-key');
+      el.textContent = t('animals.' + key);
+    });
   }
 
   // Component: Source link item

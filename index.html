@@ -9,19 +9,27 @@
 </head>
 <body>
   <main class="container">
+    <div class="header">
+      <div class="language-switcher">
+        <button id="lang-toggle" class="lang-btn" aria-label="Toggle language">
+          <span class="lang-text">FI / EN</span>
+        </button>
+      </div>
+    </div>
+
     <div class="timer-container">
-      <div class="timer-label">Page Open Time</div>
+      <div class="timer-label" data-i18n="pageOpenTime">Page Open Time</div>
       <div id="page-timer">00:00:00</div>
     </div>
-    <h2>Animals killed for food since opening this page</h2>
+    <h2 data-i18n="mainTitle">Animals killed for food since opening this page</h2>
     <ul class="animal-kill-counter" id="animal-counter-list"></ul>
 
     <div class="sources">
-      <h3>Sources</h3>
+      <h3 data-i18n="sourcesTitle">Sources</h3>
       <ul id="sources-list"></ul>
     </div>
 
-    <p class="disclaimer">Data based on 2013 statistics. Actual numbers may vary.</p>
+    <p class="disclaimer" data-i18n="disclaimer">Data based on 2013 statistics. Actual numbers may vary.</p>
   </main>
 
   <script src="script.js"></script>

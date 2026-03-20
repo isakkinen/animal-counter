@@ -40,6 +40,41 @@ body {
   padding: 40px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--border-color);
+  position: relative;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+}
+
+.language-switcher {
+  display: flex;
+}
+
+.lang-btn {
+  background: var(--lighter-bg);
+  border: 1px solid var(--border-color);
+  color: var(--accent-blue);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.lang-btn:hover {
+  background: var(--light-bg);
+  color: var(--accent-gold);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.lang-btn:active {
+  transform: translateY(0);
 }
 
 h2 {
@@ -191,6 +226,15 @@ h2 {
 @media (max-width: 768px) {
   .container {
     padding: 24px;
+  }
+
+  .header {
+    margin-bottom: 20px;
+  }
+
+  .lang-btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
   }
 
   h2 {
