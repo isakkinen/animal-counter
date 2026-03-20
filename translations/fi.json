@@ -1,0 +1,25 @@
+{
+  "pageOpenTime": "Sivun avoinna olo aika",
+  "mainTitle": "Eläimet, jotka on tapettu ruoaksi sivun avaamisen jälkeen",
+  "sourcesTitle": "Lähteet",
+  "disclaimer": "Tiedot perustuvat vuoden 2013 tilastoihin. Todelliset luvut voivat poiketa.",
+  "animals": {
+    "wild_caught_fish": "🐟 villiä kalaa",
+    "chickens": "🐔 kanaa",
+    "farmed_fish": "🐠 kasvatettua kalaa",
+    "ducks": "🦆 sorsaa",
+    "pigs": "🐷 sikaa",
+    "rabbits": "🐰 kania",
+    "geese": "🦢 hanhea",
+    "turkeys": "🦃 kalkkunaa",
+    "sheep": "🐑 lammasta",
+    "goats": "🐐 vuohea",
+    "cattle": "🐄 nautaa",
+    "rodents": "🐭 jyrsijää",
+    "other_birds": "🕊️ kyyhkystä ja muita lintuja",
+    "buffalo": "🐃 buffaloa",
+    "horses": "🐴 hevosta",
+    "donkeys": "🫏 aasia ja muulia",
+    "camels": "🐪 kamelia"
+  }
+}

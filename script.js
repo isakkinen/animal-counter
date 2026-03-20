@@ -1,69 +1,35 @@
 window.addEventListener('DOMContentLoaded', function() {
-  // Translation data
-  var translations = {
-    en: {
-      pageOpenTime: "Page Open Time",
-      mainTitle: "Animals killed for food since opening this page",
-      sourcesTitle: "Sources",
-      disclaimer: "Data based on 2013 statistics. Actual numbers may vary.",
-      animals: {
-        wild_caught_fish: "🐟 wild caught fish",
-        chickens: "🐔 chickens",
-        farmed_fish: "🐠 farmed fish",
-        ducks: "🦆 ducks",
-        pigs: "🐷 pigs",
-        rabbits: "🐰 rabbits",
-        geese: "🦢 geese",
-        turkeys: "🦃 turkeys",
-        sheep: "🐑 sheep",
-        goats: "🐐 goats",
-        cattle: "🐄 cattle",
-        rodents: "🐭 rodents",
-        other_birds: "🕊️ pigeons and other birds",
-        buffalo: "🐃 buffalo",
-        horses: "🐴 horses",
-        donkeys: "🫏 donkeys and mules",
-        camels: "🐪 camels and other camelids"
-      }
-    },
-    fi: {
-      pageOpenTime: "Sivun avoinna olo aika",
-      mainTitle: "Eläimet, jotka on tapettu ruoaksi sivun avaamisen jälkeen",
-      sourcesTitle: "Lähteet",
-      disclaimer: "Tiedot perustuvat vuoden 2013 tilastoihin. Todelliset luvut voivat poiketa.",
-      animals: {
-        wild_caught_fish: "🐟 villiä kalaa",
-        chickens: "🐔 kanaa",
-        farmed_fish: "🐠 kasvatettua kalaa",
-        ducks: "🦆 sorsaa",
-        pigs: "🐷 sikaa",
-        rabbits: "🐰 kania",
-        geese: "🦢 hanhea",
-        turkeys: "🦃 kalkkunaa",
-        sheep: "🐑 lammasta",
-        goats: "🐐 vuohea",
-        cattle: "🐄 nautaa",
-        rodents: "🐭 jyrsijää",
-        other_birds: "🕊️ kyyhkystä ja muita lintuja",
-        buffalo: "🐃 buffaloa",
-        horses: "🐴 hevosta",
-        donkeys: "🫏 aasia ja muulia",
-        camels: "🐪 kamelia"
-      }
-    }
-  };
+  // Translation data object - will be populated from JSON files
+  var translations = {};
 
   // Get current language from localStorage or default to English
   var currentLanguage = localStorage.getItem('animalCounterLanguage') || 'en';
+
+  // Load translations from JSON files
+  Promise.all([
+    fetch('translations/en.json').then(response => response.json()),
+    fetch('translations/fi.json').then(response => response.json())
+  ]).then(function(results) {
+    translations.en = results[0];
+    translations.fi = results[1];
+    
+    // Initialize the page with loaded translations
+    updateLanguage();
+  }).catch(function(error) {
+    console.error('Error loading translations:', error);
+  });
 
   // Function to get translated text
   function t(key) {
     var keys = key.split('.');
     var value = translations[currentLanguage];
+    if (!value) {
+      return key; // Fallback if translations not loaded yet
+    }
     for (var i = 0; i < keys.length; i++) {
       value = value[keys[i]];
       if (value === undefined) {
-        return translations['en'][key] || key;
+        return translations['en'] ? (translations['en'][keys[0]] || key) : key;
       }
     }
     return value;

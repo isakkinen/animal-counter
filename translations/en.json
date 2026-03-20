@@ -1,0 +1,25 @@
+{
+  "pageOpenTime": "Page Open Time",
+  "mainTitle": "Animals killed for food since opening this page",
+  "sourcesTitle": "Sources",
+  "disclaimer": "Data based on 2013 statistics. Actual numbers may vary.",
+  "animals": {
+    "wild_caught_fish": "🐟 wild caught fish",
+    "chickens": "🐔 chickens",
+    "farmed_fish": "🐠 farmed fish",
+    "ducks": "🦆 ducks",
+    "pigs": "🐷 pigs",
+    "rabbits": "🐰 rabbits",
+    "geese": "🦢 geese",
+    "turkeys": "🦃 turkeys",
+    "sheep": "🐑 sheep",
+    "goats": "🐐 goats",
+    "cattle": "🐄 cattle",
+    "rodents": "🐭 rodents",
+    "other_birds": "🕊️ pigeons and other birds",
+    "buffalo": "🐃 buffalo",
+    "horses": "🐴 horses",
+    "donkeys": "🫏 donkeys and mules",
+    "camels": "🐪 camels and other camelids"
+  }
+}
