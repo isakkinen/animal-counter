@@ -260,83 +260,11 @@
       <div id="page-timer">00:00:00</div>
     </div>
     <h2>Animals killed for food since opening this page</h2>
-    <ul class="animal-kill-counter">
-      <li>
-        <span id="akc-wild_caught_fish">0</span>
-        <span class="animal-name">🐟 wild caught fish</span>
-      </li>
-      <li>
-        <span id="akc-chickens">0</span>
-        <span class="animal-name">🐔 chickens</span>
-      </li>
-      <li>
-        <span id="akc-farmed_fish">0</span>
-        <span class="animal-name">🐠 farmed fish</span>
-      </li>
-      <li>
-        <span id="akc-ducks">0</span>
-        <span class="animal-name">🦆 ducks</span>
-      </li>
-      <li>
-        <span id="akc-pigs">0</span>
-        <span class="animal-name">🐷 pigs</span>
-      </li>
-      <li>
-        <span id="akc-rabbits">0</span>
-        <span class="animal-name">🐰 rabbits</span>
-      </li>
-      <li>
-        <span id="akc-geese">0</span>
-        <span class="animal-name">🦢 geese</span>
-      </li>
-      <li>
-        <span id="akc-turkeys">0</span>
-        <span class="animal-name">🦃 turkeys</span>
-      </li>
-      <li>
-        <span id="akc-sheep">0</span>
-        <span class="animal-name">🐑sheep</span>
-      </li>
-      <li>
-        <span id="akc-goats">0</span>
-        <span class="animal-name">🐐 goats</span>
-      </li>
-      <li>
-        <span id="akc-cattle">0</span>
-        <span class="animal-name">🐄 cattle</span>
-      </li>
-      <li>
-        <span id="akc-rodents">0</span>
-        <span class="animal-name">🐭 rodents</span>
-      </li>
-      <li>
-        <span id="akc-other_birds">0</span>
-        <span class="animal-name">🕊️ pigeons and other birds</span>
-      </li>
-      <li>
-        <span id="akc-buffalo">0</span>
-        <span class="animal-name">🐃 buffalo</span>
-      </li>
-      <li>
-        <span id="akc-horses">0</span>
-        <span class="animal-name">🐴 horses</span>
-      </li>
-      <li>
-        <span id="akc-donkeys">0</span>
-        <span class="animal-name">🫏 donkeys and mules</span>
-      </li>
-      <li>
-        <span id="akc-camels">0</span>
-        <span class="animal-name">🐪 camels and other camelids</span>
-      </li>
-    </ul>
+    <ul class="animal-kill-counter" id="animal-counter-list"></ul>
 
     <div class="sources">
       <h3>Sources</h3>
-      <ul>
-        <li><a href="http://faostat3.fao.org/download/Q/QL/E" target="_blank">FAOSTAT [Region: <i>World + (Total)</i>, Element: <i>Producing Animals/Slaughtered</i>, Items Aggregated: <i>Meat, Total > (List)</i>, Year: <i>2013</i>]</a></li>
-        <li><a href="http://fishcount.org.uk/fish-count-estimates" target="_blank">Fish count estimates (fishcount.org.uk)</a></li>
-      </ul>
+      <ul id="sources-list"></ul>
     </div>
 
     <p class="disclaimer">Data based on 2013 statistics. Actual numbers may vary.</p>
@@ -348,6 +276,79 @@
       function padZero(num) {
         return String(num).padStart(2, '0');
       }
+
+      // Animal counter data with display labels
+      var animalsData = [
+        { key: "wild_caught_fish", label: "🐟 wild caught fish", killed: 970000000000 },
+        { key: "chickens", label: "🐔 chickens", killed: 61171973510 },
+        { key: "farmed_fish", label: "🐠 farmed fish", killed: 38000000000 },
+        { key: "ducks", label: "🦆 ducks", killed: 2887594480 },
+        { key: "pigs", label: "🐷 pigs", killed: 1451856889.38 },
+        { key: "rabbits", label: "🐰 rabbits", killed: 1171578000 },
+        { key: "geese", label: "🦢 geese", killed: 687147000 },
+        { key: "turkeys", label: "🦃 turkeys", killed: 618086890 },
+        { key: "sheep", label: "🐑 sheep", killed: 536742256.33 },
+        { key: "goats", label: "🐐 goats", killed: 438320370.99 },
+        { key: "cattle", label: "🐄 cattle", killed: 298799160.08 },
+        { key: "rodents", label: "🐭 rodents", killed: 70371000 },
+        { key: "other_birds", label: "🕊️ pigeons and other birds", killed: 59656000 },
+        { key: "buffalo", label: "🐃 buffalo", killed: 25798819 },
+        { key: "horses", label: "🐴 horses", killed: 4863367 },
+        { key: "donkeys", label: "🫏 donkeys and mules", killed: 3213400 },
+        { key: "camels", label: "🐪 camels and other camelids", killed: 3243266.03 }
+      ];
+
+      // Component: Animal counter item
+      function createAnimalCounterItem(animal) {
+        var li = document.createElement('li');
+        
+        var countSpan = document.createElement('span');
+        countSpan.id = 'akc-' + animal.key;
+        countSpan.textContent = '0';
+        
+        var nameSpan = document.createElement('span');
+        nameSpan.className = 'animal-name';
+        nameSpan.textContent = animal.label;
+        
+        li.appendChild(countSpan);
+        li.appendChild(nameSpan);
+        return li;
+      }
+
+      // Component: Source link item
+      function createSourceItem(source) {
+        var li = document.createElement('li');
+        var link = document.createElement('a');
+        link.href = source.url;
+        link.target = '_blank';
+        link.innerHTML = source.text;
+        li.appendChild(link);
+        return li;
+      }
+
+      // Sources data
+      var sourcesData = [
+        {
+          url: "http://faostat3.fao.org/download/Q/QL/E",
+          text: "FAOSTAT [Region: <i>World + (Total)</i>, Element: <i>Producing Animals/Slaughtered</i>, Items Aggregated: <i>Meat, Total > (List)</i>, Year: <i>2013</i>]"
+        },
+        {
+          url: "http://fishcount.org.uk/fish-count-estimates",
+          text: "Fish count estimates (fishcount.org.uk)"
+        }
+      ];
+
+      // Render animal counter list
+      var counterList = document.getElementById('animal-counter-list');
+      animalsData.forEach(function(animal) {
+        counterList.appendChild(createAnimalCounterItem(animal));
+      });
+
+      // Render sources list
+      var sourcesList = document.getElementById('sources-list');
+      sourcesData.forEach(function(source) {
+        sourcesList.appendChild(createSourceItem(source));
+      });
 
       // Timer functionality
       var pageOpenTime = new Date();
@@ -370,25 +371,12 @@
 
       // Animal counter functionality
       var updatesPerSecond = 20;
-      var animalsKilledPerYear = {
-        "wild_caught_fish": 970000000000,
-        "chickens": 61171973510,
-        "farmed_fish": 38000000000,
-        "ducks": 2887594480,
-        "pigs": 1451856889.38,
-        "rabbits": 1171578000,
-        "geese": 687147000,
-        "turkeys": 618086890,
-        "sheep": 536742256.33,
-        "goats": 438320370.99,
-        "cattle": 298799160.08,
-        "rodents": 70371000,
-        "other_birds": 59656000,
-        "buffalo": 25798819,
-        "horses": 4863367,
-        "donkeys": 3213400,
-        "camels": 3243266.03,
-      };
+      var animalsKilledPerYear = {};
+      
+      // Build animals killed per year from animalsData
+      animalsData.forEach(function(animal) {
+        animalsKilledPerYear[animal.key] = animal.killed;
+      });
 
       var secondsPerYear = 365 * 24 * 60 * 60;
       var interval = 1000 / updatesPerSecond;
